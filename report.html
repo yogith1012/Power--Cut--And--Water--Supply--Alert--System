@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Report Issue - Power Cut & Water Supply Alert System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>⚡ Power Cut & Water Supply Alert System</h1>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a> |
+        <a href="report.html">Report Issue</a> |
+        <a href="alerts.html">Alerts</a> |
+        <a href="admin.html">Admin</a> |
+        <a href="login.html">Logout</a>
+    </nav>
+
+    <hr>
+
+</header>
+
+<section>
+
+    <h2>📝 Report Power Cut / Water Supply Issue</h2>
+
+    <p>Please fill in the details below to report an issue.</p>
+
+    <form id="complaintForm">
+
+        <label><b>User Name</b></label><br>
+        <input type="text" id="userName" placeholder="Enter your name" required><br><br>
+
+        <label><b>Email</b></label><br>
+        <input type="email" id="email" placeholder="Enter your email" required><br><br>
+
+        <label><b>Phone Number</b></label><br>
+        <input type="tel" id="phone" placeholder="Enter phone number" required><br><br>
+
+        <label><b>Area</b></label><br>
+        <input type="text" id="area" placeholder="Enter your area" required><br><br>
+
+        <label><b>Issue Type</b></label><br>
+
+        <select id="issueType" required>
+            <option value="">-- Select Issue Type --</option>
+            <option>Power Cut</option>
+            <option>Water Supply</option>
+            <option>Transformer Failure</option>
+            <option>Low Voltage</option>
+            <option>Water Leakage</option>
+        </select>
+
+        <br><br>
+
+        <label><b>Priority</b></label><br>
+
+        <select id="priority">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+        </select>
+
+        <br><br>
+
+        <label><b>Description</b></label><br>
+
+        <textarea
+            id="description"
+            rows="5"
+            placeholder="Describe your issue here..."
+            required></textarea>
+
+        <br><br>
+
+        <button type="submit">Submit Report</button>
+
+        <button type="reset">Clear Form</button>
+
+        <br><br>
+
+        <button type="button"
+                onclick="window.location.href='alerts.html'">
+            Skip to Alerts
+        </button>
+
+        <p id="message"></p>
+
+    </form>
+
+    <br>
+
+    <h3>Reporting Tips</h3>
+
+    <ul>
+        <li>Provide the correct area name.</li>
+        <li>Select the correct issue type.</li>
+        <li>Describe the issue clearly.</li>
+        <li>Provide nearby landmark if required.</li>
+    </ul>
+
+</section>
+
+<hr>
+
+<footer>
+
+<p>
+© 2026 Power Cut & Water Supply Alert System
+<br>
+Developed for Final Year Project
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Power Cut & Water Supply Alert System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+<h1>⚡ Power Cut & Water Supply Alert System</h1>
+
+<nav>
+    <a href="dashboard.html">Dashboard</a> |
+    <a href="report.html">Report Issue</a> |
+    <a href="alerts.html">Alerts</a> |
+    <a href="admin.html">Admin</a> |
+    <a href="login.html">Logout</a>
+</nav>
+
+<hr>
+
+</header>
+
+
+<section>
+
+<h2>👨‍💼 Admin Dashboard</h2>
+
+<p>Welcome Administrator!</p>
+
+
+<h3>System Statistics</h3>
+
+
+<table border="1" width="100%" cellpadding="10">
+
+<tr bgcolor="#dddddd">
+<th>Category</th>
+<th>Total</th>
+</tr>
+
+
+<tr>
+<td>Total Registered Users</td>
+<td id="totalUsers">0</td>
+</tr>
+
+
+<tr>
+<td>Total Reports</td>
+<td id="totalReports">0</td>
+</tr>
+
+
+<tr>
+<td>Power Cut Reports</td>
+<td id="powerReports">0</td>
+</tr>
+
+
+<tr>
+<td>Water Supply Reports</td>
+<td id="waterReports">0</td>
+</tr>
+
+
+<tr>
+<td>Resolved Issues</td>
+<td id="resolvedReports">0</td>
+</tr>
+
+
+<tr>
+<td>Pending Issues</td>
+<td id="pendingReports">0</td>
+</tr>
+
+
+</table>
+
+
+<br>
+
+
+<h3>📋 Recent Complaints</h3>
+
+
+<table border="1" width="100%" cellpadding="10">
+
+
+<thead>
+
+<tr bgcolor="#dddddd">
+
+<th>ID</th>
+<th>Area</th>
+<th>Issue Type</th>
+<th>Description</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="complaintTable">
+
+
+</tbody>
+
+
+</table>
+
+
+
+<br>
+
+
+<h3>Admin Actions</h3>
+
+
+<button onclick="window.location.href='dashboard.html'">
+🏠 Dashboard
+</button>
+
+
+<button onclick="window.location.href='report.html'">
+📝 Report Issue
+</button>
+
+
+<button onclick="window.location.href='alerts.html'">
+🚨 View Alerts
+</button>
+
+
+<button onclick="location.reload()">
+🔄 Refresh
+</button>
+
+
+<button onclick="window.location.href='login.html'">
+🚪 Logout
+</button>
+
+
+
+</section>
+
+
+<hr>
+
+
+<footer>
+
+<p>
+© 2026 Power Cut & Water Supply Alert System
+<br>
+Administrator Panel
+</p>
+
+</footer>
+
+
+
+<script src="script.js"></script>
+
+
+
+<script>
+
+
+fetch("http://localhost:8081/complaints/all")
+
+
+.then(response => response.json())
+
+
+.then(data => {
+
+
+let table = document.getElementById("complaintTable");
+
+
+let power = 0;
+let water = 0;
+let pending = 0;
+let resolved = 0;
+
+
+
+data.forEach(complaint => {
+
+
+
+table.innerHTML += `
+
+<tr>
+
+<td>${complaint.id}</td>
+
+<td>${complaint.area}</td>
+
+<td>${complaint.issueType}</td>
+
+<td>${complaint.description}</td>
+
+<td>${complaint.status}</td>
+
+
+<td>
+
+<button onclick="updateStatus(${complaint.id})">
+Update Status
+</button>
+
+
+<button onclick="deleteComplaint(${complaint.id})">
+Delete
+</button>
+
+
+</td>
+
+
+</tr>
+
+`;
+
+
+
+if(complaint.issueType === "Power Cut"){
+    power++;
+}
+
+
+if(complaint.issueType === "Water Supply"){
+    water++;
+}
+
+
+if(complaint.status === "Pending"){
+    pending++;
+}
+
+
+if(complaint.status === "Resolved"){
+    resolved++;
+}
+
+
+
+});
+
+
+
+document.getElementById("totalReports").innerHTML = data.length;
+
+document.getElementById("powerReports").innerHTML = power;
+
+document.getElementById("waterReports").innerHTML = water;
+
+document.getElementById("pendingReports").innerHTML = pending;
+
+document.getElementById("resolvedReports").innerHTML = resolved;
+
+
+
+})
+
+
+
+.catch(error => {
+
+console.log(error);
+
+document.getElementById("complaintTable").innerHTML =
+"<tr><td colspan='6'>No Complaints Found</td></tr>";
+
+});
+
+
+
+
+function updateStatus(id){
+
+
+let status = prompt(
+"Enter Status:\nPending\nIn Progress\nResolved"
+);
+
+
+if(status){
+
+
+fetch(`http://localhost:8081/complaints/status/${id}?status=${status}`,{
+
+method:"PUT"
+
+})
+
+
+.then(()=>{
+
+alert("Status Updated Successfully");
+
+location.reload();
+
+});
+
+
+}
+
+
+}
+
+
+
+
+
+function deleteComplaint(id){
+
+
+if(confirm("Delete this complaint?")){
+
+
+fetch(`http://localhost:8081/complaints/delete/${id}`,{
+
+method:"DELETE"
+
+})
+
+
+.then(()=>{
+
+alert("Complaint Deleted");
+
+location.reload();
+
+});
+
+
+}
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+/* =====================================
+   POWER CUT & WATER SUPPLY ALERT SYSTEM
+   Premium Dark Theme
+===================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+}
+
+/* Navigation */
+
+nav{
+    width:100%;
+    background:#111827;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 50px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
+}
+
+.logo{
+    font-size:28px;
+    color:#FFD700;
+    font-weight:bold;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+}
+
+nav ul li{
+    margin-left:30px;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    transition:.3s;
+    font-size:17px;
+}
+
+nav ul li a:hover{
+    color:#00c3ff;
+}
+
+/* Hero */
+
+.hero{
+    height:90vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:30px;
+}
+
+.hero h1{
+    font-size:60px;
+    color:#FFD700;
+    margin-bottom:20px;
+}
+
+.hero p{
+    width:70%;
+    color:#d1d5db;
+    font-size:20px;
+    line-height:32px;
+}
+
+.btn{
+    margin-top:35px;
+    padding:15px 40px;
+    border:none;
+    background:#FFD700;
+    color:#111;
+    font-size:18px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.4s;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#00c3ff;
+    color:white;
+}
+
+/* Cards */
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+.card-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+    margin-top:50px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:18px;
+    padding:30px;
+    transition:.4s;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 40px rgba(0,195,255,.25);
+}
+
+.card h2{
+    color:#FFD700;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#cbd5e1;
+    line-height:28px;
+}
+
+/* Dashboard */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    margin-top:40px;
+}
+
+.box{
+    background:#1e293b;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.box h3{
+    color:#FFD700;
+}
+
+.box h1{
+    margin-top:10px;
+    color:#00c3ff;
+}
+
+/* Tables */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+}
+
+table th{
+    background:#FFD700;
+    color:black;
+    padding:15px;
+}
+
+table td{
+    padding:15px;
+    background:#1e293b;
+    border-bottom:1px solid #334155;
+}
+
+/* Forms */
+
+form{
+    width:550px;
+    max-width:95%;
+    margin:40px auto;
+    background:#1e293b;
+    padding:30px;
+    border-radius:18px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    margin-bottom:20px;
+    border:none;
+    border-radius:10px;
+    background:#334155;
+    color:white;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:2px solid #FFD700;
+}
+
+button{
+    background:#FFD700;
+    color:black;
+    border:none;
+    padding:14px 30px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#00c3ff;
+    color:white;
+}
+
+/* Alerts */
+
+.alert{
+    background:#facc15;
+    color:black;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+.success{
+    background:#22c55e;
+    color:white;
+}
+
+.danger{
+    background:#ef4444;
+    color:white;
+}
+
+/* Footer */
+
+footer{
+    background:#111827;
+    text-align:center;
+    padding:30px;
+    margin-top:80px;
+    color:#cbd5e1;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:40px;
+}
+
+.hero p{
+    width:95%;
+}
+
+nav{
+    flex-direction:column;
+}
+
+nav ul{
+    margin-top:20px;
+}
+
+nav ul li{
+    margin:10px;
+}
+
+}

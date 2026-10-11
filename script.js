@@ -1,20 +1,17 @@
 // ==========================================
-// Power Cut & Water Supply Alert System
-// script.js
-// ==========================================
+ // Power Cut & Water Supply Alert System
+ // script.js
+ // ==========================================
 
-// Welcome message
+const API_BASE_URL = "https://poweralert-backend.onrender.com";
+
 console.log("Power Cut & Water Supply Alert System Loaded Successfully!");
 
-// Show alert when page loads
 window.onload = function () {
     console.log("Website Loaded");
 };
 
-// ===============================
 // Navigation Active Button
-// ===============================
-
 const navLinks = document.querySelectorAll("nav a");
 
 navLinks.forEach(link => {
@@ -24,185 +21,111 @@ navLinks.forEach(link => {
     });
 });
 
-// ===============================
 // Smooth Scroll
-// ===============================
-
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
     anchor.addEventListener("click", function (e) {
-
         e.preventDefault();
-
         const target = document.querySelector(this.getAttribute("href"));
 
         if (target) {
-            target.scrollIntoView({
-                behavior: "smooth"
-            });
+            target.scrollIntoView({ behavior: "smooth" });
         }
-
     });
-
 });
 
-// ===============================
 // Button Click Effect
-// ===============================
-
-const buttons = document.querySelectorAll("button");
-
-buttons.forEach(button => {
-
+document.querySelectorAll("button").forEach(button => {
     button.addEventListener("click", function () {
-
         this.style.transform = "scale(0.95)";
-
         setTimeout(() => {
             this.style.transform = "scale(1)";
         }, 150);
-
     });
-
 });
 
-// ===============================
 // Register User
-// ===============================
-
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
-
     registerForm.addEventListener("submit", async function (e) {
-
         e.preventDefault();
 
         const user = {
-
             name: document.getElementById("name").value,
             email: document.getElementById("email").value,
             phone: document.getElementById("phone").value,
             password: document.getElementById("password").value
-
         };
 
+        const message = document.getElementById("message");
+
         try {
-
-            const response = await fetch("http://localhost:8081/users/register", {
+            const response = await fetch(`${API_BASE_URL}/users/register`, {
                 method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)
-
             });
 
             if (response.ok) {
-
-                document.getElementById("message").innerHTML =
-                    "✅ Registration Successful!";
-
+                if (message) message.textContent = "Registration Successful!";
                 registerForm.reset();
-
             } else {
-
-                document.getElementById("message").innerHTML =
-                    "❌ Registration Failed!";
-
+                if (message) message.textContent = "Registration Failed!";
             }
-
         } catch (error) {
-
-            document.getElementById("message").innerHTML =
-                "❌ Server Connection Error!";
-
+            console.error("Registration error:", error);
+            if (message) message.textContent = "Server Connection Error!";
         }
-
     });
-
 }
 
-// ===============================
 // Login User
-// ===============================
-
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
-
     loginForm.addEventListener("submit", async function (e) {
-
         e.preventDefault();
 
         const user = {
-
             email: document.getElementById("email").value,
             password: document.getElementById("password").value
-
         };
 
+        const message = document.getElementById("message");
+
         try {
-
-            const response = await fetch("http://localhost:8081/users/login", {
-
+            const response = await fetch(`${API_BASE_URL}/users/login`, {
                 method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)
-
             });
 
-            const data = await response.json();
+            const data = await response.json().catch(() => null);
 
-            if (data && data.id) {
-
-                document.getElementById("message").innerHTML =
-                    "✅ Login Successful!";
+            if (response.ok && data && data.id) {
+                if (message) message.textContent = "Login Successful!";
 
                 setTimeout(() => {
-
                     window.location.href = "dashboard.html";
-
                 }, 1000);
-
             } else {
-
-                document.getElementById("message").innerHTML =
-                    "❌ Invalid Email or Password";
-
+                if (message) message.textContent = "Invalid Email or Password";
             }
-
         } catch (error) {
-
-            document.getElementById("message").innerHTML =
-                "❌ Server Connection Error";
-
+            console.error("Login error:", error);
+            if (message) message.textContent = "Server Connection Error!";
         }
-
     });
-
 }
 
-// ===============================
 // Complaint Form
-// ===============================
-
 const complaintForm = document.getElementById("complaintForm");
 
 if (complaintForm) {
-
     complaintForm.addEventListener("submit", async function (e) {
-
         e.preventDefault();
 
         const complaint = {
-
             userName: document.getElementById("userName").value,
             email: document.getElementById("email").value,
             phone: document.getElementById("phone").value,
@@ -210,69 +133,48 @@ if (complaintForm) {
             issueType: document.getElementById("issueType").value,
             priority: document.getElementById("priority").value,
             description: document.getElementById("description").value
-
         };
 
         try {
-
-            const response = await fetch("http://localhost:8081/complaints/add", {
-
+            const response = await fetch(`${API_BASE_URL}/complaints/add`, {
                 method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(complaint)
-
             });
 
-          if (response.ok) {
+            if (response.ok) {
+                alert("Complaint Submitted Successfully!");
+                complaintForm.reset();
 
-    alert("✅ Complaint Submitted Successfully!");
-
-    complaintForm.reset();
-
-    // Automatically go to Alerts page
-    setTimeout(() => {
-        window.location.href = "alerts.html";
-    }, 1000);
-
-} else {
-
-    alert("❌ Failed to Submit Complaint!");
-
-}
-
+                setTimeout(() => {
+                    window.location.href = "alerts.html";
+                }, 1000);
+            } else {
+                const errorText = await response.text();
+                console.error("Complaint submission failed:", errorText);
+                alert("Failed to Submit Complaint. Please check the form and try again.");
+            }
         } catch (error) {
-
-            alert("❌ Server Connection Error!");
-
-            console.log(error);
-
+            console.error("Complaint error:", error);
+            alert("Server Connection Error!");
         }
-
     });
-
 }
 
-// ===============================
 // Load Complaints in Admin Page
-// ===============================
-
 const complaintTable = document.getElementById("complaintTable");
 
 if (complaintTable) {
-
-    fetch("http://localhost:8081/complaints/all")
-
-        .then(response => response.json())
-
+    fetch(`${API_BASE_URL}/complaints/all`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-
             complaintTable.innerHTML = "";
 
-            // Statistics
             let totalReports = data.length;
             let powerReports = 0;
             let waterReports = 0;
@@ -280,132 +182,84 @@ if (complaintTable) {
             let pendingReports = 0;
 
             data.forEach(complaint => {
-
-                if (complaint.issueType === "Power Cut") {
-                    powerReports++;
-                }
-
-                if (complaint.issueType === "Water Supply") {
-                    waterReports++;
-                }
-
-                if (complaint.status === "Resolved") {
-                    resolvedReports++;
-                }
-
-                if (complaint.status === "Pending") {
-                    pendingReports++;
-                }
+                if (complaint.issueType === "Power Cut") powerReports++;
+                if (complaint.issueType === "Water Supply") waterReports++;
+                if (complaint.status === "Resolved") resolvedReports++;
+                if (complaint.status === "Pending") pendingReports++;
 
                 complaintTable.innerHTML += `
-<tr>
-    <td>${complaint.id}</td>
-    <td>${complaint.area}</td>
-    <td>${complaint.issueType}</td>
-    <td>${complaint.description}</td>
-    <td>${complaint.status}</td>
-
-    <td>
-        <button onclick="updateStatus(${complaint.id})">
-            Update Status
-        </button>
-
-        <button onclick="deleteComplaint(${complaint.id})">
-            Delete
-        </button>
-    </td>
-</tr>
-`;
+                    <tr>
+                        <td>${complaint.id ?? ""}</td>
+                        <td>${complaint.area ?? ""}</td>
+                        <td>${complaint.issueType ?? ""}</td>
+                        <td>${complaint.description ?? ""}</td>
+                        <td>${complaint.status ?? ""}</td>
+                        <td>
+                            <button onclick="updateStatus(${complaint.id})">Update Status</button>
+                            <button onclick="deleteComplaint(${complaint.id})">Delete</button>
+                        </td>
+                    </tr>`;
             });
 
-            // Update Statistics
-            document.getElementById("totalReports").innerText = totalReports;
-            document.getElementById("powerReports").innerText = powerReports;
-            document.getElementById("waterReports").innerText = waterReports;
-            document.getElementById("resolvedReports").innerText = resolvedReports;
-            document.getElementById("pendingReports").innerText = pendingReports;
+            const setText = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) element.innerText = value;
+            };
 
+            setText("totalReports", totalReports);
+            setText("powerReports", powerReports);
+            setText("waterReports", waterReports);
+            setText("resolvedReports", resolvedReports);
+            setText("pendingReports", pendingReports);
         })
-
         .catch(error => {
-
-            console.log(error);
-
+            console.error("Loading complaints failed:", error);
             complaintTable.innerHTML =
-                "<tr><td colspan='6'>No Complaint Found</td></tr>";
+                "<tr><td colspan='6'>Unable to load complaints. Please try again.</td></tr>";
+        });
+}
 
+// Update Status
+async function updateStatus(id) {
+    const newStatus = prompt("Enter Status:\nPending\nIn Progress\nResolved");
+
+    if (!newStatus) return;
+
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/complaints/status/${id}?status=${encodeURIComponent(newStatus)}`,
+            { method: "PUT" }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        alert("Status Updated Successfully!");
+        location.reload();
+    } catch (error) {
+        console.error("Status update failed:", error);
+        alert("Failed to Update Status!");
+    }
+}
+
+// Delete Complaint
+async function deleteComplaint(id) {
+    if (!confirm("Are you sure you want to delete this complaint?")) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/complaints/delete/${id}`, {
+            method: "DELETE"
         });
 
-}
-
-// ===============================
-// Update Status
-// ===============================
-
-function updateStatus(id) {
-
-    const newStatus = prompt(
-        "Enter Status:\nPending\nIn Progress\nResolved"
-    );
-
-    if (!newStatus) {
-        return;
-    }
-
-   fetch(`http://localhost:8081/complaints/status/${id}?status=${encodeURIComponent(newStatus)}`, {
-        method: "PUT"
-    })
-
-    .then(response => response.json())
-
-    .then(data => {
-
-        alert("✅ Status Updated Successfully!");
-
-        location.reload();
-
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
-        alert("❌ Failed to Update Status!");
-
-    });
-
-}
-
-// ===============================
-// Delete Complaint
-// ===============================
-
-function deleteComplaint(id) {
-
-    if (!confirm("Are you sure you want to delete this complaint?")) {
-        return;
-    }
-
-    fetch(`http://localhost:8081/complaints/delete/${id}`, {
-
-        method: "DELETE"
-
-    })
-
-    .then(() => {
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
 
         alert("Complaint Deleted Successfully!");
-
         location.reload();
-
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
+    } catch (error) {
+        console.error("Delete failed:", error);
         alert("Failed to Delete Complaint!");
-
-    });
-
+    }
 }
